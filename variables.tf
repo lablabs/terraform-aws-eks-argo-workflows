@@ -18,24 +18,25 @@ variable "cluster_identity_oidc_issuer_arn" {
 
 variable "helm_chart_name" {
   type        = string
-  default     = "<$addon-name>"
+  default     = "argo-workflows"
   description = "Helm chart name to be installed"
 }
 
 variable "helm_chart_version" {
   type        = string
-  default     = "<helm_chart_version>"
+  default     = "0.20.8"
   description = "Version of the Helm chart"
 }
 
 variable "helm_release_name" {
   type        = string
-  default     = "<$addon-name>"
+  default     = "argo-workflows"
   description = "Helm release name"
 }
+
 variable "helm_repo_url" {
   type        = string
-  default     = "<helm_repo_url>"
+  default     = "https://argoproj.github.io/argo-helm"
   description = "Helm repository"
 }
 
@@ -47,76 +48,34 @@ variable "helm_create_namespace" {
 
 variable "namespace" {
   type        = string
-  default     = "<$addon-name>"
-  description = "The K8s namespace in which the <$addon-name> service account has been created"
+  default     = "argo-workflows"
+  description = "The K8s namespace in which the argo-workflows service account has been created"
 }
 
 variable "settings" {
   type        = map(any)
   default     = {}
-  description = "Additional helm sets which will be passed to the Helm chart values, see https://hub.helm.sh/charts/stable/<$addon-name>"
+  description = "Additional helm sets which will be passed to the Helm chart values, see https://hub.helm.sh/charts/stable/argo-workflows"
 }
 
 variable "values" {
   type        = string
   default     = ""
-  description = "Additional yaml encoded values which will be passed to the Helm chart, see https://hub.helm.sh/charts/stable/<$addon-name>"
+  description = "Additional yaml encoded values which will be passed to the Helm chart, see https://hub.helm.sh/charts/stable/argo-workflows"
 }
 
 # ================ IRSA variables (optional) ================
 
-variable "rbac_create" {
-  type        = bool
-  default     = true
-  description = "Whether to create and use RBAC resources"
-}
-
-variable "service_account_create" {
-  type        = bool
-  default     = true
-  description = "Whether to create Service Account"
-}
-
-variable "service_account_name" {
+variable "service_account_name_prefix" {
   type        = string
-  default     = "<$addon-name>"
-  description = "The k8s <$addon-name> service account name"
-}
-
-variable "irsa_role_create" {
-  type        = bool
-  default     = true
-  description = "Whether to create IRSA role and annotate service account"
-}
-
-variable "irsa_policy_enabled" {
-  type        = bool
-  default     = true
-  description = "Whether to create opinionated policy to allow operations on specified zones in `policy_allowed_zone_ids`."
-}
-
-variable "irsa_assume_role_enabled" {
-  type        = bool
-  default     = false
-  description = "Whether IRSA is allowed to assume role defined by irsa_assume_role_arn."
-}
-
-variable "irsa_assume_role_arn" {
-  type        = string
-  default     = ""
-  description = "Assume role arn. Assume role must be enabled."
-}
-
-variable "irsa_additional_policies" {
-  type        = map(string)
-  default     = {}
-  description = "Map of the additional policies to be attached to default role. Where key is arbitrary id and value is policy arn."
+  default     = "argo-workflows"
+  description = "The k8s argo-workflows service account name prefix."
 }
 
 variable "irsa_role_name_prefix" {
   type        = string
-  default     = "<$addon-name>-irsa"
-  description = "The IRSA role name prefix for <$addon-name>"
+  default     = "argo-workflows-irsa"
+  description = "The IRSA role name prefix for argo-workflows"
 }
 
 variable "irsa_tags" {

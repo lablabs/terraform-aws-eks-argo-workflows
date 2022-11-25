@@ -13,7 +13,7 @@ output "kubernetes_application_attributes" {
   value       = try(kubernetes_manifest.this[0], {})
 }
 
-output "iam_role_attributes" {
-  description = "<$addon-name> IAM role atributes"
-  value       = try(aws_iam_role.this[0], {})
+output "server_iam_role_attributes" {
+  description = "Argo Workflows server IAM role attributes"
+  value       = try(aws_iam_role.server[0], {})
 }
