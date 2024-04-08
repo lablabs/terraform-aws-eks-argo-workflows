@@ -17,3 +17,8 @@ output "server_iam_role_attributes" {
   description = "Argo Workflows server IAM role attributes"
   value       = try(aws_iam_role.server[0], {})
 }
+
+output "controller_iam_role_attributes" {
+  description = "Argo Workflows controller IAM role attributes"
+  value       = try(aws_iam_role.controller[0], {})
+}
