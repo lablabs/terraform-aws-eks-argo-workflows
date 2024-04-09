@@ -34,6 +34,15 @@ data "utils_deep_merge_yaml" "values" {
         }
       }
     }) : "",
+    local.controller_irsa_role_create ? yamlencode({
+      controller = {
+        serviceAccount = {
+          annotations = {
+            "eks.amazonaws.com/role-arn" = aws_iam_role.controller[0].arn
+          }
+        }
+      }
+    }) : "",
     var.values,
   ])
 }
