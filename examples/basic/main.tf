@@ -38,11 +38,10 @@ module "addon_installation_argo_kubernetes" {
   })
 
   argo_sync_policy = {
-    "automated" : {}
-    "syncOptions" = ["CreateNamespace=true"]
+    automated   = {}
+    syncOptions = ["CreateNamespace=true"]
   }
 }
-
 
 module "addon_installation_argo_helm" {
   source = "../../"
@@ -55,7 +54,7 @@ module "addon_installation_argo_helm" {
   cluster_identity_oidc_issuer_arn = module.eks_cluster.eks_cluster_identity_oidc_issuer_arn
 
   argo_sync_policy = {
-    "automated" : {}
-    "syncOptions" = ["CreateNamespace=true"]
+    automated   = {}
+    syncOptions = ["CreateNamespace=true"]
   }
 }
