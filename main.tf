@@ -12,16 +12,15 @@ locals {
   addon = {
     #TODO: check with odstrk, should be changed to helm_enabled
     enabled = true
-    name = "argo-workflows"  # used for argo_name, helm_chart_name, helm_release_name defaults
-    namespace = "argo"       # used for argo_namespace 
+    name = "argo-workflows"  # used as defaults for argo_name, helm_chart_name, helm_release_name
+    namespace = "argo-workflows"       # used as defaults for argo_namespace 
 
     helm_chart_version = "0.20.8"
     helm_repo_url      = "https://argoproj.github.io/argo-helm"
-    namespace = "argo-workflows"
 
-    argo_enabled = false
-    argo_helm_enabled = false
-    
+    argo_namespace = "argo"    
+    argo_kubernetes_manifest_computed_fields = ["metadata.labels", "metadata.annotations"]
+
   }
 
   # FIXME config: add addon IRSA configuration here or remove if not needed
@@ -30,6 +29,8 @@ locals {
       # FIXME config: add default IRSA overrides here or leave empty if not needed, but make sure to keep at least one key
       service_account_name_prefix = "argo-workflows"
       irsa_role_name_prefix = "argo-workflows-irsa"
+      server_irsa_role_create = true
+      controller_irsa_role_create = true
     }
   }
 
@@ -42,20 +43,29 @@ locals {
 
   addon_values = yamlencode({
     # FIXME config: add default values here
-    argo_namespace = "argo"
-    argo_enabled = false
-    argo_helm_enabled = false
-    argo_destination_server = "https://kubernetes.default.svc"
-    argo_project = "default"
-    argo_info = [{
-    "name"  = "terraform"
-    "value" = "true"
-    }]
-    argo_metadata = {
-    "finalizers" : [
-      "resources-finalizer.argocd.argoproj.io"
-      ]
+    server = module.addon-irsa.output.irsa_enabled ? : {
+      serviceAccount = {
+        name = "${var.service_account_name_prefix}-server"
+        annotations = local.server_irsa_role_create ? {"eks.amazonaws.com/role-arn" = aws_iam_role.controller[0].arn} : {}
+      }
+      podSecurityContext = local.server_irsa_role_create ? { fsGroup = 65534 } : {}
+    } : {
+      serviceAccount = {
+        name = "${var.service_account_name_prefix}-server"
+      }
+    } 
+    controller = {
+      serviceAccount = module.addon-irsa.output.irsa_enabled ? {
+        name = "${var.service_account_name_prefix}-controller"
+        annotations = local.controller_irsa_role_create ? {"eks.amazonaws.com/role-arn" = aws_iam_role.controller[0].arn} : {}
+      } : {
+        name = "${var.service_account_name_prefix}-controller"
+      }
     }
-
+    workflow = {
+      serviceAccount = {
+        name = "${var.service_account_name_prefix}-workflow"
+      }
+    }
   })
 }
