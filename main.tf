@@ -43,7 +43,7 @@ locals {
 
   addon_values = yamlencode({
     # FIXME config: add default values here
-    server = module.addon-irsa.output.irsa_enabled ? : {
+    server = module.addon-irsa.irsa_enabled ? : {
       serviceAccount = {
         name = "${var.service_account_name_prefix}-server"
         annotations = local.server_irsa_role_create ? {"eks.amazonaws.com/role-arn" = aws_iam_role.controller[0].arn} : {}
@@ -55,7 +55,7 @@ locals {
       }
     } 
     controller = {
-      serviceAccount = module.addon-irsa.output.irsa_enabled ? {
+      serviceAccount = module.addon-irsa.irsa_enabled ? {
         name = "${var.service_account_name_prefix}-controller"
         annotations = local.controller_irsa_role_create ? {"eks.amazonaws.com/role-arn" = aws_iam_role.controller[0].arn} : {}
       } : {
