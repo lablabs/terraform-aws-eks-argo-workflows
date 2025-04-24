@@ -27,11 +27,23 @@ locals {
   addon_irsa = {
     (local.addon.name) = {
       # FIXME config: add default IRSA overrides here or leave empty if not needed, but make sure to keep at least one key
-      service_account_name_prefix = "argo-workflows"
       irsa_role_name_prefix = "argo-workflows-irsa"
-      server_irsa_role_create = true
-      controller_irsa_role_create = true
+      service_account_name_prefix = "argo-workflows"
     }
+    "${local.addon.name}-server" = {
+      irsa_role_create = var.server_irsa_role_create ? var.server_irsa_role_create : true
+      irsa_assume_role_policy_condition_values =  "system:serviceaccount:${var.namespace}:${local.addon_irsa[local.addon.name].service_account_name_prefix}-server"
+      irsa_role_name_prefix = "argo-workflows-irsa"
+      service_account_name_prefix = "argo-workflows"
+    }
+    "${local.addon.name}-controller" = {
+      irsa_role_create = var.controller_irsa_role_create ? var.controller_irsa_role_create : true
+      irsa_assume_role_policy_condition_values =  "system:serviceaccount:${var.namespace}:${local.addon_irsa[local.addon.name].service_account_name_prefix}-controller"
+      irsa_role_name_prefix = "argo-workflows-irsa"
+      service_account_name_prefix = "argo-workflows"
+    }
+   
+    # TODO: Maybe we should replace service_account_name_prefix to service_account_name which is more supported by universal module
   }
 
   # FIXME config: add addon OIDC configuration here or remove if not needed
@@ -43,25 +55,33 @@ locals {
 
   addon_values = yamlencode({
     # FIXME config: add default values here
-    server = module.addon-irsa[local.addon_name].irsa_role_enabled ? {
-      serviceAccount = 
-        name = "${local.addon-irsa[local.addon_name].service_account_name_prefix}-server"
-        annotations = local.addon-irsa[local.addon_name].server_irsa_role_create ? {"eks.amazonaws.com/role-arn" = aws_iam_role.controller[0].arn} : {}
+    server = module.addon-irsa["${local.addon.name}-server"].irsa_role_enabled ? {
+      serviceAccount = { 
+        name = "${local.addon-irsa[local.addon.name].service_account_name_prefix}-server"
+        annotations = module.addon-irsa["${local.addon.name}-server"].irsa_role_enabled ? {
+	  "eks.amazonaws.com/role-arn" = module.addon-irsa["${local.addon.name}-server"].iam_role_attributes.arn 
+        } : tomap({})
       }
-      podSecurityContext = local.addon-irsa[local.addon_name].server_irsa_role_create ? { fsGroup = 65534 } : {}
+      podSecurityContext = local.addon-irsa[local.addon.name].server_irsa_role_create ? { 
+        fsGroup = 65534 
+      } : tomap({})
     } : {
       serviceAccount = {
-        name = "${local.addon-irsa[local.addon_name].service_account_name_prefix}-server"
+        name = "${local.addon-irsa[local.addon.name].service_account_name_prefix}-server"
       }
     } 
+
     controller = {
-      serviceAccount = module.addon-irsa[local.addon_name].irsa_role_enabled ? {
-        name = "${local.addon-irsa[local.addon_name].service_account_name_prefix}-controller"
-        annotations = local.addon-irsa[local.addon_name].controller_irsa_role_create ? {"eks.amazonaws.com/role-arn" = aws_iam_role.controller[0].arn} : {}
+      serviceAccount = module.addon-irsa["${local.addon.name}-controller"].irsa_role_enabled ? {
+        name = "${local.addon-irsa[local.addon.name].service_account_name_prefix}-controller"
+        annotations = local.addon-irsa[local.addon.name].controller_irsa_role_create ? {
+          "eks.amazonaws.com/role-arn" = module.addon-irsa["${local.addon.name}-controller"].iam_role_attributes.arn 
+        } : tomap({})
       } : {
-        name = "${local.addon-irsa[local.addon_name].service_account_name_prefix}-controller"
+        name = "${local.addon-irsa[local.addon.name].service_account_name_prefix}-controller"
       }
     }
+
     workflow = {
       serviceAccount = {
         name = "${local.addon-irsa[local.addon_name].service_account_name_prefix}-workflow"
