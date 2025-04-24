@@ -43,28 +43,28 @@ locals {
 
   addon_values = yamlencode({
     # FIXME config: add default values here
-    server = module.addon-irsa.irsa_enabled ? : {
-      serviceAccount = {
-        name = "${var.service_account_name_prefix}-server"
-        annotations = local.server_irsa_role_create ? {"eks.amazonaws.com/role-arn" = aws_iam_role.controller[0].arn} : {}
+    server = module.addon-irsa[local.addon_name].irsa_role_enabled ? {
+      serviceAccount = 
+        name = "${local.addon-irsa[local.addon_name].service_account_name_prefix}-server"
+        annotations = local.addon-irsa[local.addon_name].server_irsa_role_create ? {"eks.amazonaws.com/role-arn" = aws_iam_role.controller[0].arn} : {}
       }
-      podSecurityContext = local.server_irsa_role_create ? { fsGroup = 65534 } : {}
+      podSecurityContext = local.addon-irsa[local.addon_name].server_irsa_role_create ? { fsGroup = 65534 } : {}
     } : {
       serviceAccount = {
-        name = "${var.service_account_name_prefix}-server"
+        name = "${local.addon-irsa[local.addon_name].service_account_name_prefix}-server"
       }
     } 
     controller = {
-      serviceAccount = module.addon-irsa.irsa_enabled ? {
-        name = "${var.service_account_name_prefix}-controller"
-        annotations = local.controller_irsa_role_create ? {"eks.amazonaws.com/role-arn" = aws_iam_role.controller[0].arn} : {}
+      serviceAccount = module.addon-irsa[local.addon_name].irsa_role_enabled ? {
+        name = "${local.addon-irsa[local.addon_name].service_account_name_prefix}-controller"
+        annotations = local.addon-irsa[local.addon_name].controller_irsa_role_create ? {"eks.amazonaws.com/role-arn" = aws_iam_role.controller[0].arn} : {}
       } : {
-        name = "${var.service_account_name_prefix}-controller"
+        name = "${local.addon-irsa[local.addon_name].service_account_name_prefix}-controller"
       }
     }
     workflow = {
       serviceAccount = {
-        name = "${var.service_account_name_prefix}-workflow"
+        name = "${local.addon-irsa[local.addon_name].service_account_name_prefix}-workflow"
       }
     }
   })
