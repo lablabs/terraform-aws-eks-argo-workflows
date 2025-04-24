@@ -1,7 +1,11 @@
 /**
- * # AWS EKS Universal Addon Terraform module
+ * # AWS EKS Argo Workflows Terraform module 
  *
  * A Terraform module to deploy the universal addon on Amazon EKS cluster.
+ *
+ * ## Description
+ *
+ * A Terraform module to deploy the Argo Workflows on Amazon EKS cluster.
  *
  * [![Terraform validate](https://github.com/lablabs/terraform-aws-eks-universal-addon/actions/workflows/validate.yaml/badge.svg)](https://github.com/lablabs/terraform-aws-eks-universal-addon/actions/workflows/validate.yaml)
  * [![pre-commit](https://github.com/lablabs/terraform-aws-eks-universal-addon/actions/workflows/pre-commit.yaml/badge.svg)](https://github.com/lablabs/terraform-aws-eks-universal-addon/actions/workflows/pre-commit.yaml)
