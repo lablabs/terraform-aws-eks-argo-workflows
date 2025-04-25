@@ -44,7 +44,7 @@ locals {
     # FIXME config: add default values here
     server = {
       serviceAccount = { 
-        name = "${local.addon_irsa[${local.addon.name}-server].service_account_name}"
+        name = local.addon_irsa["${local.addon.name}-server"].service_account_name
         annotations = module.addon-irsa["${local.addon.name}-server"].irsa_role_enabled ? {
 	  "eks.amazonaws.com/role-arn" = module.addon-irsa["${local.addon.name}-server"].iam_role_attributes.arn 
         } : tomap({})
@@ -56,7 +56,7 @@ locals {
 
     controller = {
       serviceAccount = {
-        name = "${local.addon_irsa[${local.addon.name}-controller].service_account_name}" 
+        name = local.addon_irsa["${local.addon.name}-controller"].service_account_name
         annotations = local.addon_irsa["${local.addon.name}-controller"].irsa_role_enabled ? {
           "eks.amazonaws.com/role-arn" = module.addon-irsa["${local.addon.name}-controller"].iam_role_attributes.arn 
         } : tomap({})
@@ -65,7 +65,7 @@ locals {
 
     workflow = {
       serviceAccount = {
-        name = "${local.addon_irsa[${local.addon.name}-workflow].service_account_name}" 
+        name = local.addon_irsa["${local.addon.name}-workflow"].service_account_name 
         annotations = local.addon_irsa["${local.addon.name}-workflow"].irsa_role_enabled ? {
           "eks.amazonaws.com/role-arn" = module.addon-irsa["${local.addon.name}-workflow"].iam_role_attributes.arn 
         } : tomap({})
