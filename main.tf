@@ -25,11 +25,6 @@ locals {
 
   # FIXME config: add addon IRSA configuration here or remove if not needed
   addon_irsa = {
-    (local.addon.name) = {
-      service_account_name_prefix = "argo-workflows"
-      # FIXME config: add default IRSA overrides here or leave empty if not needed, but make sure to keep at least one key
-      irsa_role_name_prefix = "argo-workflows-irsa"
-    }
     "${local.addon.name}-server" = {
       service_account_name_prefix = "argo-workflows"
       irsa_role_create = var.server_irsa_role_create != null ? var.server_irsa_role_create : true
