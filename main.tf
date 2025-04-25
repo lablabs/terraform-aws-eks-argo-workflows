@@ -6,24 +6,16 @@
  * [![Terraform validate](https://github.com/lablabs/terraform-aws-eks-argo-workflows/actions/workflows/validate.yaml/badge.svg)](https://github.com/lablabs/terraform-aws-eks-argo-workflows/actions/workflows/validate.yaml)
  * [![pre-commit](https://github.com/lablabs/terraform-aws-argo-workflows/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/lablabs/terraform-aws-eks-argo-workflows/actions/workflows/pre-commit.yml)
  */
-# FIXME config: update addon docs above
+
 locals {
-  # FIXME config: add addon configuration here
   addon = {
-    #TODO: check with odstrk, should be changed to helm_enabled
-    enabled = true
-    name = "argo-workflows"  # used as defaults for argo_name, helm_chart_name, helm_release_name
-    namespace = "argo-workflows"       # used as defaults for argo_namespace 
+    name = "argo-workflows" 
+    namespace = "argo-workflows" 
 
     helm_chart_version = "0.20.8"
     helm_repo_url      = "https://argoproj.github.io/argo-helm"
-
-    argo_namespace = "argo"    
-    argo_kubernetes_manifest_computed_fields = ["metadata.labels", "metadata.annotations"]
-
   }
 
-  # FIXME config: add addon IRSA configuration here or remove if not needed
   addon_irsa = {
     "${local.addon.name}-server" = {
       service_account_name_prefix = "argo-workflows"
