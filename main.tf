@@ -18,21 +18,21 @@ locals {
 
   addon_irsa = {
     "${local.addon.name}-server" = {
-      service_account_name = "argo-workflows-server"
+      service_account_name = "${local.addon.name}-server"
       irsa_role_create = var.server_irsa_role_create != null ? var.server_irsa_role_create : true
       irsa_assume_role_policy_condition_values =  "system:serviceaccount:${var.namespace}:${var.service_account_name}"
       irsa_role_name = "argo-workflows-irsa"
       irsa_additional_policies = var.server_irsa_additional_policies ? var.server_irsa_additional_policies : tomap({})
     }
     "${local.addon.name}-controller" = {
-      service_account_name = "argo-workflows-controller"
+      service_account_name = "${local.addon.name}-controller"
       irsa_role_create = var.controller_irsa_role_create != null ? var.controller_irsa_role_create : true
       irsa_assume_role_policy_condition_values =  "system:serviceaccount:${var.namespace}:${var.service_account_name}"
       irsa_role_name= "argo-workflows-irsa"
       irsa_additional_policies = var.controller_irsa_additional_policies ? var.controller_irsa_additional_policies : tomap({})
     }
      "${local.addon.name}-workflow" = {
-      service_account_name = "argo-workflows-workflow"
+      service_account_name = "${local.addon.name}-workflow"
       irsa_role_create = var.workflow_irsa_role_create != null ? var.workflow_irsa_role_create : false
       irsa_assume_role_policy_condition_values =  "system:serviceaccount:${var.namespace}:${var.service_account_name}"
       irsa_role_name= "argo-workflows-irsa"
