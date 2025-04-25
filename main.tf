@@ -36,14 +36,14 @@ locals {
     }
     "${local.addon.name}-server" = {
       service_account_name_prefix = "argo-workflows"
-      irsa_role_create = var.server_irsa_role_create ? var.server_irsa_role_create : true
+      irsa_role_create = var.server_irsa_role_create != null ? var.server_irsa_role_create : true
       irsa_assume_role_policy_condition_values =  "system:serviceaccount:${var.namespace}:${var.service_account_name_prefix}-server"
       irsa_role_name_prefix = "argo-workflows-irsa"
       irsa_additional_policies = var.server_irsa_additional_policies ? var.server_irsa_additional_policies : tomap({})
     }
     "${local.addon.name}-controller" = {
       service_account_name_prefix = "argo-workflows"
-      irsa_role_create = var.controller_irsa_role_create ? var.controller_irsa_role_create : true
+      irsa_role_create = var.controller_irsa_role_create != null ? var.controller_irsa_role_create : true
       irsa_assume_role_policy_condition_values =  "system:serviceaccount:${var.namespace}:${var.service_account_name_prefix}-controller"
       irsa_role_name_prefix = "argo-workflows-irsa"
       irsa_additional_policies = var.controller_irsa_additional_policies ? var.controller_irsa_additional_policies : tomap({})
