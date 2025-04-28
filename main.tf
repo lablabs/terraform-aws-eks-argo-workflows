@@ -1,7 +1,7 @@
 /**
  * # AWS EKS Argo Workflows Terraform module 
  *
- * A Terraform module to deploy the Argo Workflows on Amazon EKS cluster.
+ * A Terraform module to deploy the [Argo Workflows](https://argoproj.github.io/workflows/)
  *
  * [![Terraform validate](https://github.com/lablabs/terraform-aws-eks-argo-workflows/actions/workflows/validate.yaml/badge.svg)](https://github.com/lablabs/terraform-aws-eks-argo-workflows/actions/workflows/validate.yaml)
  * [![pre-commit](https://github.com/lablabs/terraform-aws-argo-workflows/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/lablabs/terraform-aws-eks-argo-workflows/actions/workflows/pre-commit.yml)
