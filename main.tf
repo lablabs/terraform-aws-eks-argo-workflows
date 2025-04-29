@@ -21,19 +21,19 @@ locals {
       service_account_name = "${local.addon.name}-server"
       irsa_role_create = var.server_irsa_role_create != null ? var.server_irsa_role_create : true
       irsa_role_name = "${local.addon.name}-serv-irsa" # Max length of rolename was reached, using shortened version
-      irsa_additional_policies = var.server_irsa_additional_policies != {} ? var.server_irsa_additional_policies : tomap({})
+      irsa_additional_policies = length(var.server_irsa_additional_policies) != 0 ? var.server_irsa_additional_policies : tomap({})
     }
     "${local.addon.name}-controller" = {
       service_account_name = "${local.addon.name}-controller"
       irsa_role_create = var.controller_irsa_role_create != null ? var.controller_irsa_role_create : true
       irsa_role_name= "${local.addon.name}-ctrl-irsa" # Max length of rolename was reached, using shortened version
-      irsa_additional_policies = var.controller_irsa_additional_policies != {} ? var.controller_irsa_additional_policies : tomap({})
+      irsa_additional_policies = length(var.controller_irsa_additional_policies) != 0 ? var.controller_irsa_additional_policies : tomap({})
     }
      "${local.addon.name}-workflow" = {
       service_account_name = "${local.addon.name}-workflow"
       irsa_role_create = var.workflow_irsa_role_create != null ? var.workflow_irsa_role_create : false
       irsa_role_name= "${local.addon.name}-work-irsa" # Max length of rolename was reached, using shortened version
-      irsa_additional_policies = var.workflow_irsa_additional_policies != {} ? var.controller_irsa_additional_policies : tomap({})
+      irsa_additional_policies = length(var.workflow_irsa_additional_policies) != 0 ? var.workflow_irsa_additional_policies : tomap({})
     }
   }
 
