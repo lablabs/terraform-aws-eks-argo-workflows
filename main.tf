@@ -20,7 +20,7 @@ locals {
     "${local.addon.name}-server" = {
       service_account_name     = "${local.addon.name}-server"
       irsa_role_create         = var.server_irsa_role_create
-      irsa_role_name           = "server" 
+      irsa_role_name           = "server"
       irsa_additional_policies = var.server_irsa_additional_policies
     }
     "${local.addon.name}-controller" = {
@@ -32,7 +32,7 @@ locals {
     "${local.addon.name}-workflow" = {
       service_account_name     = "${local.addon.name}-workflow"
       irsa_role_create         = var.workflow_irsa_role_create
-      irsa_role_name           = "workflow" 
+      irsa_role_name           = "workflow"
       irsa_additional_policies = var.workflow_irsa_additional_policies
     }
   }
