@@ -18,19 +18,25 @@ locals {
 
   addon_irsa = {
     "${local.addon.name}-server" = {
-      service_account_name     = "${local.addon.name}-server"
+      rbac_create              = var.server_rbac_create
+      service_account_create   = var.server_service_account_create
+      service_account_name     = var.server_service_account_name
       irsa_role_create         = var.server_irsa_role_create
       irsa_role_name           = "server"
       irsa_additional_policies = var.server_irsa_additional_policies
     }
     "${local.addon.name}-controller" = {
-      service_account_name     = "${local.addon.name}-controller"
+      rbac_create              = var.controller_rbac_create
+      service_account_create   = var.controller_service_account_create
+      service_account_name     = var.controller_service_account_name
       irsa_role_create         = var.controller_irsa_role_create
       irsa_role_name           = "controller"
       irsa_additional_policies = var.controller_irsa_additional_policies
     }
     "${local.addon.name}-workflow" = {
-      service_account_name     = "${local.addon.name}-workflow"
+      rbac_create              = var.workflow_rbac_create
+      service_account_create   = var.workflow_service_account_create
+      service_account_name     = var.workflow_service_account_name
       irsa_role_create         = var.workflow_irsa_role_create
       irsa_role_name           = "workflow"
       irsa_additional_policies = var.workflow_irsa_additional_policies
@@ -38,10 +44,14 @@ locals {
   }
 
   addon_values = yamlencode({
-    # FIXME config: add default values here
     server = {
+      rbac = {
+        create = module.addon-irsa["${local.addon.name}-server"].rbac_create
+      }
+
       serviceAccount = {
-        name = local.addon_irsa["${local.addon.name}-server"].service_account_name
+        create = module.addon-irsa["${local.addon.name}-server"].service_account_create
+        name   = module.addon-irsa["${local.addon.name}-server"].service_account_name
         annotations = module.addon-irsa["${local.addon.name}-server"].irsa_role_enabled ? {
           "eks.amazonaws.com/role-arn" = module.addon-irsa["${local.addon.name}-server"].iam_role_attributes.arn
         } : tomap({})
@@ -52,8 +62,13 @@ locals {
     }
 
     controller = {
+      rbac = {
+        create = module.addon-irsa["${local.addon.name}-controller"].rbac_create
+      }
+
       serviceAccount = {
-        name = local.addon_irsa["${local.addon.name}-controller"].service_account_name
+        create = module.addon-irsa["${local.addon.name}-controller"].service_account_create
+        name   = module.addon-irsa["${local.addon.name}-controller"].service_account_name
         annotations = module.addon-irsa["${local.addon.name}-controller"].irsa_role_enabled ? {
           "eks.amazonaws.com/role-arn" = module.addon-irsa["${local.addon.name}-controller"].iam_role_attributes.arn
         } : tomap({})
@@ -61,8 +76,13 @@ locals {
     }
 
     workflow = {
+      rbac = {
+        create = module.addon-irsa["${local.addon.name}-workflow"].rbac_create
+      }
+
       serviceAccount = {
-        name = local.addon_irsa["${local.addon.name}-workflow"].service_account_name
+        create = module.addon-irsa["${local.addon.name}-workflow"].service_account_create
+        name   = module.addon-irsa["${local.addon.name}-workflow"].service_account_name
         annotations = module.addon-irsa["${local.addon.name}-workflow"].irsa_role_enabled ? {
           "eks.amazonaws.com/role-arn" = module.addon-irsa["${local.addon.name}-workflow"].iam_role_attributes.arn
         } : tomap({})
@@ -70,4 +90,6 @@ locals {
 
     }
   })
+
+  addon_depends_on = []
 }

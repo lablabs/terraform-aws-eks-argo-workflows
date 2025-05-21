@@ -95,6 +95,9 @@ See [basic example](examples/basic) for further information.
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | The name of the cluster (required for pod identity). Defaults to `""`. | `string` |
 | <a name="input_controller_irsa_additional_policies"></a> [controller\_irsa\_additional\_policies](#input\_controller\_irsa\_additional\_policies) | Map of the additional policies to be attached to controller role. Where key is arbitrary id and value is policy arn | `map(string)` |
 | <a name="input_controller_irsa_role_create"></a> [controller\_irsa\_role\_create](#input\_controller\_irsa\_role\_create) | Whether to create IRSA role and annotate service account for the controller | `bool` |
+| <a name="input_controller_rbac_create"></a> [controller\_rbac\_create](#input\_controller\_rbac\_create) | Whether to create and use Controller RBAC resources. | `bool` |
+| <a name="input_controller_service_account_create"></a> [controller\_service\_account\_create](#input\_controller\_service\_account\_create) | Whether to create the Service Account for the Controller. | `bool` |
+| <a name="input_controller_service_account_name"></a> [controller\_service\_account\_name](#input\_controller\_service\_account\_name) | The name of the Service Account for the Controller. | `string` |
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | Set to false to prevent the module from creating any resources. | `bool` |
 | <a name="input_helm_atomic"></a> [helm\_atomic](#input\_helm\_atomic) | If set, installation process purges chart on fail. The wait flag will be set automatically if atomic is used. Defaults to `false`. | `bool` |
 | <a name="input_helm_chart_name"></a> [helm\_chart\_name](#input\_helm\_chart\_name) | Helm chart name to be installed. Required if `argo_source_type` is set to `helm`. Defaults to `""`. | `string` |
@@ -154,6 +157,9 @@ See [basic example](examples/basic) for further information.
 | <a name="input_rbac_create"></a> [rbac\_create](#input\_rbac\_create) | Whether to create and use RBAC resources. Defaults to `true`. | `bool` |
 | <a name="input_server_irsa_additional_policies"></a> [server\_irsa\_additional\_policies](#input\_server\_irsa\_additional\_policies) | Map of the additional policies to be attached to server role. Where key is arbitrary id and value is policy arn | `map(string)` |
 | <a name="input_server_irsa_role_create"></a> [server\_irsa\_role\_create](#input\_server\_irsa\_role\_create) | Whether to create IRSA role and annotate service account for the server | `bool` |
+| <a name="input_server_rbac_create"></a> [server\_rbac\_create](#input\_server\_rbac\_create) | Whether to create and use Server RBAC resources. | `bool` |
+| <a name="input_server_service_account_create"></a> [server\_service\_account\_create](#input\_server\_service\_account\_create) | Whether to create the Service Account for the Server. | `bool` |
+| <a name="input_server_service_account_name"></a> [server\_service\_account\_name](#input\_server\_service\_account\_name) | The name of the Service Account for the Server. | `string` |
 | <a name="input_service_account_create"></a> [service\_account\_create](#input\_service\_account\_create) | Whether to create Service Account. Defaults to `true`. | `bool` |
 | <a name="input_service_account_name"></a> [service\_account\_name](#input\_service\_account\_name) | The Kubernetes Service Account name. Defaults to `""`. | `string` |
 | <a name="input_service_account_namespace"></a> [service\_account\_namespace](#input\_service\_account\_namespace) | The Kubernetes Service Account namespace. Defaults to `""`. | `string` |
@@ -161,6 +167,9 @@ See [basic example](examples/basic) for further information.
 | <a name="input_values"></a> [values](#input\_values) | Additional YAML encoded values which will be passed to the Helm chart. Defaults to `""`. | `string` |
 | <a name="input_workflow_irsa_additional_policies"></a> [workflow\_irsa\_additional\_policies](#input\_workflow\_irsa\_additional\_policies) | Map of the additional policies to be attached to workflow role. Where key is arbitrary id and value is policy arn | `map(string)` |
 | <a name="input_workflow_irsa_role_create"></a> [workflow\_irsa\_role\_create](#input\_workflow\_irsa\_role\_create) | Whether to create IRSA role and annotate service account for the workflow | `bool` |
+| <a name="input_workflow_rbac_create"></a> [workflow\_rbac\_create](#input\_workflow\_rbac\_create) | Whether to create and use Workflow RBAC resources. | `bool` |
+| <a name="input_workflow_service_account_create"></a> [workflow\_service\_account\_create](#input\_workflow\_service\_account\_create) | Whether to create the Service Account for the Workflow. | `bool` |
+| <a name="input_workflow_service_account_name"></a> [workflow\_service\_account\_name](#input\_workflow\_service\_account\_name) | The name of the Service Account for the Workflow. | `string` |
 ## Outputs
 
 | Name | Description |
