@@ -34,11 +34,11 @@ moved {
 }
 
 moved {
-  from = aws_iam_role.controller
+  from = aws_iam_role.workflow
   to   = module.addon-irsa["workflow"].aws_iam_role.this
 }
 
 moved {
-  from = aws_iam_role_policy_attachment.controller_additional
+  from = aws_iam_role_policy_attachment.workflow_additional
   to   = module.addon-irsa["workflow"].aws_iam_role_policy_attachment.this_additional
 }
