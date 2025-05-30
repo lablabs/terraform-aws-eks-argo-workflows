@@ -31,7 +31,14 @@ variable "server_service_account_name" {
 variable "server_irsa_role_create" {
   type        = bool
   default     = true
-  description = "Whether to create IRSA role and annotate service account for the server"
+  description = "Whether to create IRSA role and annotate service account for the Server."
+  nullable    = false
+}
+
+variable "server_irsa_role_name" {
+  type        = string
+  default     = "argo-workflows-server"
+  description = "The name of the IRSA role for the Server."
   nullable    = false
 }
 
@@ -66,7 +73,14 @@ variable "controller_service_account_name" {
 variable "controller_irsa_role_create" {
   type        = bool
   default     = true
-  description = "Whether to create IRSA role and annotate service account for the controller"
+  description = "Whether to create IRSA role and annotate service account for the Controller."
+  nullable    = false
+}
+
+variable "controller_irsa_role_name" {
+  type        = string
+  default     = "argo-workflows-controller"
+  description = "The name of the IRSA role for the Controller."
   nullable    = false
 }
 
@@ -101,7 +115,14 @@ variable "workflow_service_account_name" {
 variable "workflow_irsa_role_create" {
   type        = bool
   default     = false
-  description = "Whether to create IRSA role and annotate service account for the workflow"
+  description = "Whether to create IRSA role and annotate service account for the Workflow."
+  nullable    = false
+}
+
+variable "workflow_irsa_role_name" {
+  type        = string
+  default     = "argo-workflows-workflow"
+  description = "The name of the IRSA role for the Workflow."
   nullable    = false
 }
 
